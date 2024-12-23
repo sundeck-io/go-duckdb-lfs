@@ -394,7 +394,7 @@ func TestDuckDBErrors(t *testing.T) {
 		},
 		{
 			tpl:    `SET external_threads=-1`,
-			errTyp: ErrorTypeSyntax,
+			errTyp: ErrorTypeInvalidInput,
 		},
 		{
 			tpl:    `CREATE UNIQUE INDEX idx ON duckdb_error_test(u_1)`,
@@ -402,13 +402,15 @@ func TestDuckDBErrors(t *testing.T) {
 		},
 	}
 	for _, tc := range testCases {
-		_, err = db.Exec(tc.tpl)
-		var de *Error
-		ok := errors.As(err, &de)
-		if !ok {
-			require.Fail(t, "error type is not (*duckdb.Error)", "tql: %s\ngot: %#v", tc.tpl, err)
-		}
-		require.Equal(t, de.Type, tc.errTyp, "tpl: %s\nactual error msg: %s", tc.tpl, de.Msg)
+		t.Run(tc.tpl, func(t *testing.T) {
+			_, err = db.Exec(tc.tpl)
+			var de *Error
+			ok := errors.As(err, &de)
+			if !ok {
+				require.Fail(t, "error type is not (*duckdb.Error)", "tql: %s\ngot: %#v", tc.tpl, err)
+			}
+			require.Equal(t, de.Type, tc.errTyp, "tpl: %s\nactual error msg: %s", tc.tpl, de.Msg)
+		})
 	}
 
 	require.NoError(t, db.Close())

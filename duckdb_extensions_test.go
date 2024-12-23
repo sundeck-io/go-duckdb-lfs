@@ -10,6 +10,7 @@ import (
 )
 
 func TestOpenSQLite(t *testing.T) {
+    t.Skip("This test is skipped because it requires the sqlite duckdb extension to be enabled")
 	t.Parallel()
 
 	db, err := sql.Open("duckdb", "sqlite:testdata/pets.sqlite")
