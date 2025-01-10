@@ -68,7 +68,7 @@ jobs:
       - name: "Run tests"
         env:
           DYLD_LIBRARY_PATH: deps/darwin_amd64
-        run: go test ./ -run '^TestOpen$' duckdb_test.go
+        run: go test ./ -run '^(TestOpen|TestExtensions)$' duckdb_test.go
       - uses: actions/upload-artifact@v4
         with:
           name: darwin_amd64
@@ -107,7 +107,7 @@ jobs:
       - name: "Run tests"
         env:
           DYLD_LIBRARY_PATH: deps/darwin_arm64
-        run: go test ./ -run '^TestOpen$' duckdb_test.go
+        run: go test ./ -run '^(TestOpen|TestExtensions)$' duckdb_test.go
       - uses: actions/upload-artifact@v4
         with:
           name: darwin_arm64
@@ -144,7 +144,7 @@ jobs:
       - name: "Run tests"
         env:
           LD_LIBRARY_PATH: deps/linux_amd64
-        run: go test ./ -run '^TestOpen$' duckdb_test.go
+        run: go test ./ -run '^(TestOpen|TestExtensions)$' duckdb_test.go
       - uses: actions/upload-artifact@v4
         with:
           name: linux_amd64
@@ -198,7 +198,7 @@ jobs:
           CXX: aarch64-linux-gnu-gcc
           GOOS: linux
           GOARCH: arm64
-        run: go test ./ -run '^TestOpen$' duckdb_test.go       
+        run: go test ./ -run '^(TestOpen|TestExtensions)$' duckdb_test.go       
       - uses: actions/upload-artifact@v4
         with:
           name: linux_arm64
